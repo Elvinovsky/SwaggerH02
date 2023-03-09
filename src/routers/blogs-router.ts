@@ -37,8 +37,8 @@ blogsRouter.post('/', authGuardMiddleware, (req: Request, res: Response) => {
     checkErrors.errorsMessages = []
     const checkRegEx = /^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
     if(!req.body.websiteUrl
-        || !checkRegEx.test(req.body.websiteUrl
-            || req.body.websiteUrl.length > 100)) {
+        || req.body.websiteUrl.length > 100
+        || !checkRegEx.test(req.body.websiteUrl)) {
         checkErrors.errorsMessages.push({ message: "errors", field: "websiteUrl"})
     }
     if(!req.body.name
