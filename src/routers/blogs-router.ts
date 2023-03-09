@@ -35,25 +35,23 @@ blogsRouter.get('/', (req: Request, res: Response) => {
 })
 blogsRouter.post('/', authGuardMiddleware, (req: Request, res: Response) => {
     checkErrors.errorsMessages = []
-
+    const checkRegEx = /^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+    if(!req.body.websiteUrl
+        || !checkRegEx.test(req.body.websiteUrl
+            || req.body.websiteUrl.length > 100)) {
+        checkErrors.errorsMessages.push({ messages: "errors", field: "websiteUrl"})
+    }
     if(!req.body.name
         || typeof req.body.name !== "string"
         || !req.body.name.trim()
         || req.body.name.length > 15) {
-        checkErrors.errorsMessages.push({messages: "errors", field: "name"})
+        checkErrors.errorsMessages.push({ messages: "errors", field: "name"})
     }
     if(!req.body.description
         || typeof req.body.description !== "string"
         || !req.body.description.trim()
         || req.body.description.length > 500) {
-        checkErrors.errorsMessages.push({messages: "errors", field: "description"})
-    }
-
-    const checkRegEx = /^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
-    if(!req.body.websiteUrl
-        || !checkRegEx.test(req.body.websiteUrl
-            || req.body.websiteUrl.length > 100)) {
-        checkErrors.errorsMessages.push({messages: "errors", field: "websiteUrl"})
+        checkErrors.errorsMessages.push({ messages: "errors", field: "description"})
     }
     if(checkErrors.errorsMessages.length > 0) {
         res.status(400).send(checkErrors)

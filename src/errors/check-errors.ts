@@ -1,1 +1,1 @@
-export let checkErrors = {"errorsMessages": [{}]}
+export let checkErrors = { errorsMessages: [{}]}

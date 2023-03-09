@@ -28,6 +28,12 @@ exports.blogsRouter.get('/', (req, res) => {
 });
 exports.blogsRouter.post('/', authGuardMiddleware, (req, res) => {
     check_errors_1.checkErrors.errorsMessages = [];
+    const checkRegEx = /^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+    if (!req.body.websiteUrl
+        || !checkRegEx.test(req.body.websiteUrl
+            || req.body.websiteUrl.length > 100)) {
+        check_errors_1.checkErrors.errorsMessages.push({ messages: "errors", field: "websiteUrl" });
+    }
     if (!req.body.name
         || typeof req.body.name !== "string"
         || !req.body.name.trim()
@@ -39,12 +45,6 @@ exports.blogsRouter.post('/', authGuardMiddleware, (req, res) => {
         || !req.body.description.trim()
         || req.body.description.length > 500) {
         check_errors_1.checkErrors.errorsMessages.push({ messages: "errors", field: "description" });
-    }
-    const checkRegEx = /^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
-    if (!req.body.websiteUrl
-        || !checkRegEx.test(req.body.websiteUrl
-            || req.body.websiteUrl.length > 100)) {
-        check_errors_1.checkErrors.errorsMessages.push({ messages: "errors", field: "websiteUrl" });
     }
     if (check_errors_1.checkErrors.errorsMessages.length > 0) {
         res.status(400).send(check_errors_1.checkErrors);
