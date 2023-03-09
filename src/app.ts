@@ -1,13 +1,14 @@
 import express from 'express'
-import bodyParser from "body-parser";
+//import bodyParser from "body-parser";
 import {postsRouter} from "./routers/posts-router";
 import {blogsRouter} from "./routers/blogs-router";
 import {deleteAllDataRouter} from "./routers/Testing-Delete-router";
 
 const app = express()
 const port = 3078
+export const jsonBodyMiddleware = express.json()
+app.use(jsonBodyMiddleware)
 
-app.use(bodyParser())
 app.use('/posts', postsRouter)
 app.use('/blogs', blogsRouter)
 app.use('/testing', deleteAllDataRouter)

@@ -27,27 +27,27 @@ exports.blogsRouter.get('/', (req, res) => {
     res.send(getAllBlogs);
 });
 exports.blogsRouter.post('/', authGuardMiddleware, (req, res) => {
-    check_errors_1.checkErrors.errorsMessages = [];
     const checkRegEx = /^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
     if (!req.body.websiteUrl
         || !checkRegEx.test(req.body.websiteUrl
             || req.body.websiteUrl.length > 100)) {
-        check_errors_1.checkErrors.errorsMessages.push({ messages: "errors", field: "websiteUrl" });
+        check_errors_1.checkErrors.errorsMessages.push({ message: "errors", field: "websiteUrl" });
     }
     if (!req.body.name
         || typeof req.body.name !== "string"
         || !req.body.name.trim()
         || req.body.name.length > 15) {
-        check_errors_1.checkErrors.errorsMessages.push({ messages: "errors", field: "name" });
+        check_errors_1.checkErrors.errorsMessages.push({ message: "errors", field: "name" });
     }
     if (!req.body.description
         || typeof req.body.description !== "string"
         || !req.body.description.trim()
         || req.body.description.length > 500) {
-        check_errors_1.checkErrors.errorsMessages.push({ messages: "errors", field: "description" });
+        check_errors_1.checkErrors.errorsMessages.push({ message: "errors", field: "description" });
     }
     if (check_errors_1.checkErrors.errorsMessages.length > 0) {
         res.status(400).send(check_errors_1.checkErrors);
+        check_errors_1.checkErrors.errorsMessages = [];
     }
     const createdBlog = blogs_repository_1.blogsRepository.addNewBlog(req.body.name, req.body.description, req.body.websiteUrl);
     res.status(201).send(createdBlog);
@@ -69,19 +69,19 @@ exports.blogsRouter.put('/:id', authGuardMiddleware, (req, res) => {
         || typeof req.body.name !== "string"
         || !req.body.name.trim()
         || req.body.name.length > 15) {
-        check_errors_1.checkErrors.errorsMessages.push({ messages: "errors", field: "name" });
+        check_errors_1.checkErrors.errorsMessages.push({ message: "errors", field: "name" });
     }
     if (!req.body.description
         || typeof req.body.description !== "string"
         || !req.body.description.trim()
         || req.body.description.length > 500) {
-        check_errors_1.checkErrors.errorsMessages.push({ messages: "errors", field: "description" });
+        check_errors_1.checkErrors.errorsMessages.push({ message: "errors", field: "description" });
     }
     const checkRegEx = /^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
     if (!req.body.websiteUrl
         || !checkRegEx.test(req.body.websiteUrl)
         || req.body.websiteUrl.length > 100) {
-        check_errors_1.checkErrors.errorsMessages.push({ messages: "errors", field: "websiteUrl" });
+        check_errors_1.checkErrors.errorsMessages.push({ message: "errors", field: "websiteUrl" });
     }
     if (check_errors_1.checkErrors.errorsMessages.length > 0) {
         res.status(400).send(check_errors_1.checkErrors);

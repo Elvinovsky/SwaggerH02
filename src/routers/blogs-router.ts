@@ -39,19 +39,19 @@ blogsRouter.post('/', authGuardMiddleware, (req: Request, res: Response) => {
     if(!req.body.websiteUrl
         || !checkRegEx.test(req.body.websiteUrl
             || req.body.websiteUrl.length > 100)) {
-        checkErrors.errorsMessages.push({ messages: "errors", field: "websiteUrl"})
+        checkErrors.errorsMessages.push({ message: "errors", field: "websiteUrl"})
     }
     if(!req.body.name
         || typeof req.body.name !== "string"
         || !req.body.name.trim()
         || req.body.name.length > 15) {
-        checkErrors.errorsMessages.push({ messages: "errors", field: "name"})
+        checkErrors.errorsMessages.push({ message: "errors", field: "name"})
     }
     if(!req.body.description
         || typeof req.body.description !== "string"
         || !req.body.description.trim()
         || req.body.description.length > 500) {
-        checkErrors.errorsMessages.push({ messages: "errors", field: "description"})
+        checkErrors.errorsMessages.push({ message: "errors", field: "description"})
     }
     if(checkErrors.errorsMessages.length > 0) {
         res.status(400).send(checkErrors)
@@ -77,19 +77,19 @@ blogsRouter.put('/:id', authGuardMiddleware, (req: Request, res: Response) => {
         || typeof req.body.name !== "string"
         || !req.body.name.trim()
         || req.body.name.length > 15) {
-        checkErrors.errorsMessages.push({messages: "errors", field: "name"})
+        checkErrors.errorsMessages.push({ message: "errors", field: "name"})
     }
     if(!req.body.description
         || typeof req.body.description !== "string"
         || !req.body.description.trim()
         || req.body.description.length > 500) {
-        checkErrors.errorsMessages.push({messages: "errors", field: "description"})
+        checkErrors.errorsMessages.push({ message: "errors", field: "description"})
     }
     const checkRegEx = /^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
     if(!req.body.websiteUrl
         || !checkRegEx.test(req.body.websiteUrl)
         || req.body.websiteUrl.length > 100) {
-        checkErrors.errorsMessages.push({messages: "errors", field: "websiteUrl"})
+        checkErrors.errorsMessages.push({ message: "errors", field: "websiteUrl" })
     }
     if(checkErrors.errorsMessages.length > 0) {
         res.status(400).send(checkErrors)
