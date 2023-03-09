@@ -4,20 +4,12 @@ exports.blogsRouter = void 0;
 const express_1 = require("express");
 const blogs_repository_1 = require("../repositories/blogs-repository");
 const check_errors_1 = require("../errors/check-errors");
-const authGuardMiddleware = (req, res, next) => {
-    if (req.query.login === "admin" && req.query.password === "qwerty") {
-        next();
-    }
-    else {
-        res.sendStatus(401);
-    }
-};
 exports.blogsRouter = (0, express_1.Router)();
 exports.blogsRouter.get('/', (req, res) => {
     const getAllBlogs = blogs_repository_1.blogsRepository.returnOfAllBlogs;
     res.send(getAllBlogs);
 });
-exports.blogsRouter.post('/', authGuardMiddleware, (req, res) => {
+exports.blogsRouter.post('/', (req, res) => {
     check_errors_1.checkErrors.errorsMessages = [];
     if (!req.body.name
         || typeof req.body.name !== "string"
@@ -42,7 +34,6 @@ exports.blogsRouter.post('/', authGuardMiddleware, (req, res) => {
     }
     const createdBlog = blogs_repository_1.blogsRepository.addNewBlog(req.body.name, req.body.description, req.body.websiteUrl);
     res.status(201).send(createdBlog);
-    //TODO 401
 });
 exports.blogsRouter.get('/:id', (req, res) => {
     const getByIdBlog = blogs_repository_1.blogsRepository.findBlogById(req.params.id);
@@ -51,7 +42,7 @@ exports.blogsRouter.get('/:id', (req, res) => {
     }
     res.send(getByIdBlog);
 });
-exports.blogsRouter.put('/:id', authGuardMiddleware, (req, res) => {
+exports.blogsRouter.put('/:id', (req, res) => {
     const searchBlogByIdForUpdate = blogs_repository_1.blogsRepository.findBlogById(req.params.id);
     if (!searchBlogByIdForUpdate) {
         res.sendStatus(404);
@@ -85,13 +76,11 @@ exports.blogsRouter.put('/:id', authGuardMiddleware, (req, res) => {
     else {
         res.status(304).send({ "errorMessages": "Unexpected Error" });
     }
-    //TODO 401
 });
-exports.blogsRouter.delete('/:id', authGuardMiddleware, (req, res) => {
+exports.blogsRouter.delete('/:id', (req, res) => {
     const foundBlogDelete = blogs_repository_1.blogsRepository.searchForBlogByIdDelete(req.params.id);
     if (!foundBlogDelete) {
         res.sendStatus(404);
     }
     res.sendStatus(204);
-    //TODO 401
 });

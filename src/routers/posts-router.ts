@@ -1,21 +1,21 @@
-import {NextFunction, Request, Response, Router} from "express";
+import {Request, Response, Router} from "express";
 import {postsRepository} from "../repositories/posts-repository";
 import {checkErrors} from "../errors/check-errors";
 
-const authGuardMiddleware = (req: Request, res: Response, next: NextFunction) => {
+/*const authGuardMiddleware = (req: Request, res: Response, next: NextFunction) => {
     if (req.query.login === "admin" && req.query.password === "qwerty") {
         next();
     } else {
         res.sendStatus(401)
     }
 
-}
+}*/
 export const postsRouter = Router()
 
 postsRouter.get('/', (req: Request, res: Response) => {
     const getAllPosts = postsRepository.returnOfAllPosts
     res.send(getAllPosts)})
-postsRouter.post('/', authGuardMiddleware, (req: Request, res: Response) => {
+postsRouter.post('/', (req: Request, res: Response) => {
     checkErrors.errorsMessages = [];
 
     if(!req.body.title
@@ -47,7 +47,6 @@ postsRouter.post('/', authGuardMiddleware, (req: Request, res: Response) => {
     }
     const createdNewPost = postsRepository.addNewPost
     (req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
-//TODO 401
     res.status(201).send(createdNewPost)
 })
 postsRouter.get('/:id', (req: Request, res: Response) => {
@@ -57,7 +56,7 @@ postsRouter.get('/:id', (req: Request, res: Response) => {
     }
     res.send(getByIdPost)
 })
-postsRouter.put('/:id', authGuardMiddleware, (req: Request, res: Response) => {
+postsRouter.put('/:id', (req: Request, res: Response) => {
     const searchPostByIdForUpdate = postsRepository.findPostById(req.params.id)
     if(!searchPostByIdForUpdate) {
         res.sendStatus(404)
@@ -97,13 +96,11 @@ const validationInputBlogId = postsRepository.searchBlogIdForPost(req.body.blogI
     } else {
         res.status (304).send({"errorMessages": "Unexpected Error"})
     }
-    //TODO 401
 })
-postsRouter.delete('/:id', authGuardMiddleware, (req: Request, res: Response) => {
+postsRouter.delete('/:id', (req: Request, res: Response) => {
     const foundPostDelete = postsRepository.searchForPostByIdDelete(req.params.id)
     if(!foundPostDelete) {
         res.sendStatus(404)
     }
     res.sendStatus(204)
-    //TODO 401
 })

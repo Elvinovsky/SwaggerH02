@@ -7,7 +7,7 @@ import {deleteAllDataRouter} from "./routers/Testing-Delete-router";
 const app = express()
 const port = 3078
 
-app.use(bodyParser.json())
+app.use(bodyParser())
 app.use('/testing', deleteAllDataRouter)
 app.use('/posts', postsRouter)
 app.use('/blogs', blogsRouter)
