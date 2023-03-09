@@ -14,7 +14,7 @@ const authGuardMiddleware = ((req: Request, res: Response, next: NextFunction) =
     const [login, password] = Buffer.from(b64auth, 'base64').toString().split(':')
 
     // Verify login and password are set and correct
-    if (login && password && login === auth.login && password === auth.password) {
+    if (req.headers.authorization === 'Basic YWRtaW46cXdlcnR5' && login && password && login === auth.login && password === auth.password) {
         // Access granted...
         return next()
     }
