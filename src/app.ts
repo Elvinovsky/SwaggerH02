@@ -8,10 +8,9 @@ const app = express()
 const port = 3078
 
 app.use(bodyParser())
-app.use('/testing', deleteAllDataRouter)
 app.use('/posts', postsRouter)
 app.use('/blogs', blogsRouter)
-
+app.use('/testing', deleteAllDataRouter)
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })

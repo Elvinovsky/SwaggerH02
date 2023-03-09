@@ -11,9 +11,9 @@ const Testing_Delete_router_1 = require("./routers/Testing-Delete-router");
 const app = (0, express_1.default)();
 const port = 3078;
 app.use((0, body_parser_1.default)());
-app.use('/testing', Testing_Delete_router_1.deleteAllDataRouter);
 app.use('/posts', posts_router_1.postsRouter);
 app.use('/blogs', blogs_router_1.blogsRouter);
+app.use('/testing', Testing_Delete_router_1.deleteAllDataRouter);
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
