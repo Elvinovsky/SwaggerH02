@@ -1,8 +1,15 @@
-import {Request, Response, Router} from "express";
+import {NextFunction, Request, Response, Router} from "express";
 import {blogsRepository} from "../repositories/blogs-repository";
 import {checkErrors} from "../errors/check-errors";
 
+const authGuardMiddleware = (req: Request, res: Response, next: NextFunction) => {
+    if (req.query.login === "admin" && req.query.password === "qwerty") {
+        next();
+    } else {
+        res.sendStatus(401)
+    }
 
+}
 export const blogsRouter = Router ()
 
 
@@ -10,7 +17,7 @@ blogsRouter.get('/', (req: Request, res: Response) => {
    const getAllBlogs = blogsRepository.returnOfAllBlogs
     res.send(getAllBlogs)
 })
-blogsRouter.post('/', (req: Request, res: Response) => {
+blogsRouter.post('/', authGuardMiddleware, (req: Request, res: Response) => {
     checkErrors.errorsMessages = []
 
     if(!req.body.name
@@ -45,7 +52,7 @@ blogsRouter.get('/:id', (req: Request, res: Response) => {
     }
     res.send(getByIdBlog)
 })
-blogsRouter.put('/:id', (req: Request, res: Response) => {
+blogsRouter.put('/:id', authGuardMiddleware, (req: Request, res: Response) => {
     const searchBlogByIdForUpdate = blogsRepository.findBlogById(req.params.id)
     if(!searchBlogByIdForUpdate) {
         res.sendStatus(404)
@@ -80,7 +87,7 @@ blogsRouter.put('/:id', (req: Request, res: Response) => {
         res.status (304).send({"errorMessages": "Unexpected Error"})
     }
 })
-blogsRouter.delete('/:id', (req: Request, res: Response) => {
+blogsRouter.delete('/:id', authGuardMiddleware, (req: Request, res: Response) => {
     const foundBlogDelete = blogsRepository.searchForBlogByIdDelete(req.params.id)
     if(!foundBlogDelete) {
         res.sendStatus(404)

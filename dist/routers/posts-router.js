@@ -4,20 +4,20 @@ exports.postsRouter = void 0;
 const express_1 = require("express");
 const posts_repository_1 = require("../repositories/posts-repository");
 const check_errors_1 = require("../errors/check-errors");
-/*const authGuardMiddleware = (req: Request, res: Response, next: NextFunction) => {
+const authGuardMiddleware = (req, res, next) => {
     if (req.query.login === "admin" && req.query.password === "qwerty") {
         next();
-    } else {
-        res.sendStatus(401)
     }
-
-}*/
+    else {
+        res.sendStatus(401);
+    }
+};
 exports.postsRouter = (0, express_1.Router)();
 exports.postsRouter.get('/', (req, res) => {
     const getAllPosts = posts_repository_1.postsRepository.returnOfAllPosts;
     res.send(getAllPosts);
 });
-exports.postsRouter.post('/', (req, res) => {
+exports.postsRouter.post('/', authGuardMiddleware, (req, res) => {
     check_errors_1.checkErrors.errorsMessages = [];
     if (!req.body.title
         || typeof req.body.title !== "string"
@@ -56,7 +56,7 @@ exports.postsRouter.get('/:id', (req, res) => {
     }
     res.send(getByIdPost);
 });
-exports.postsRouter.put('/:id', (req, res) => {
+exports.postsRouter.put('/:id', authGuardMiddleware, (req, res) => {
     const searchPostByIdForUpdate = posts_repository_1.postsRepository.findPostById(req.params.id);
     if (!searchPostByIdForUpdate) {
         res.sendStatus(404);
@@ -97,7 +97,7 @@ exports.postsRouter.put('/:id', (req, res) => {
         res.status(304).send({ "errorMessages": "Unexpected Error" });
     }
 });
-exports.postsRouter.delete('/:id', (req, res) => {
+exports.postsRouter.delete('/:id', authGuardMiddleware, (req, res) => {
     const foundPostDelete = posts_repository_1.postsRepository.searchForPostByIdDelete(req.params.id);
     if (!foundPostDelete) {
         res.sendStatus(404);
