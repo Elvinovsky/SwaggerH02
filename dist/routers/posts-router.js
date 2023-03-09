@@ -28,17 +28,17 @@ exports.postsRouter.get('/', (req, res) => {
 });
 exports.postsRouter.post('/', authGuardMiddleware, (req, res) => {
     check_errors_1.checkErrors.errorsMessages = [];
-    if (!req.body.title
-        || typeof req.body.title !== "string"
-        || !req.body.title.trim()
-        || req.body.title.length > 30) {
-        check_errors_1.checkErrors.errorsMessages.push({ message: "errors", field: "title" });
-    }
     if (!req.body.shortDescription
         || typeof req.body.shortDescription !== "string"
         || !req.body.shortDescription.trim()
         || req.body.shortDescription.length > 100) {
         check_errors_1.checkErrors.errorsMessages.push({ message: "errors", field: "shortDescription" });
+    }
+    if (!req.body.title
+        || typeof req.body.title !== "string"
+        || !req.body.title.trim()
+        || req.body.title.length > 30) {
+        check_errors_1.checkErrors.errorsMessages.push({ message: "errors", field: "title" });
     }
     if (!req.body.content
         || typeof req.body.content !== "string"
@@ -71,17 +71,17 @@ exports.postsRouter.put('/:id', authGuardMiddleware, (req, res) => {
         res.sendStatus(404);
     }
     check_errors_1.checkErrors.errorsMessages = [];
-    if (!req.body.title
-        || typeof req.body.title !== "string"
-        || !req.body.title.trim()
-        || req.body.title.length > 30) {
-        check_errors_1.checkErrors.errorsMessages.push({ message: "errors", field: "title" });
-    }
     if (!req.body.shortDescription
         || typeof req.body.shortDescription !== "string"
         || !req.body.shortDescription.trim()
         || req.body.shortDescription.length > 100) {
         check_errors_1.checkErrors.errorsMessages.push({ message: "errors", field: "shortDescription" });
+    }
+    if (!req.body.title
+        || typeof req.body.title !== "string"
+        || !req.body.title.trim()
+        || req.body.title.length > 30) {
+        check_errors_1.checkErrors.errorsMessages.push({ message: "errors", field: "title" });
     }
     if (!req.body.content
         || typeof req.body.content !== "string"

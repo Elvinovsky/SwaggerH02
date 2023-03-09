@@ -27,6 +27,7 @@ exports.blogsRouter.get('/', (req, res) => {
     res.send(getAllBlogs);
 });
 exports.blogsRouter.post('/', authGuardMiddleware, (req, res) => {
+    check_errors_1.checkErrors.errorsMessages = [];
     const checkRegEx = /^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
     if (!req.body.websiteUrl
         || !checkRegEx.test(req.body.websiteUrl
@@ -47,7 +48,6 @@ exports.blogsRouter.post('/', authGuardMiddleware, (req, res) => {
     }
     if (check_errors_1.checkErrors.errorsMessages.length > 0) {
         res.status(400).send(check_errors_1.checkErrors);
-        check_errors_1.checkErrors.errorsMessages = [];
     }
     const createdBlog = blogs_repository_1.blogsRepository.addNewBlog(req.body.name, req.body.description, req.body.websiteUrl);
     res.status(201).send(createdBlog);
@@ -65,6 +65,12 @@ exports.blogsRouter.put('/:id', authGuardMiddleware, (req, res) => {
         res.sendStatus(404);
     }
     check_errors_1.checkErrors.errorsMessages = [];
+    const checkRegEx = /^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+    if (!req.body.websiteUrl
+        || !checkRegEx.test(req.body.websiteUrl)
+        || req.body.websiteUrl.length > 100) {
+        check_errors_1.checkErrors.errorsMessages.push({ message: "errors", field: "websiteUrl" });
+    }
     if (!req.body.name
         || typeof req.body.name !== "string"
         || !req.body.name.trim()
@@ -76,12 +82,6 @@ exports.blogsRouter.put('/:id', authGuardMiddleware, (req, res) => {
         || !req.body.description.trim()
         || req.body.description.length > 500) {
         check_errors_1.checkErrors.errorsMessages.push({ message: "errors", field: "description" });
-    }
-    const checkRegEx = /^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
-    if (!req.body.websiteUrl
-        || !checkRegEx.test(req.body.websiteUrl)
-        || req.body.websiteUrl.length > 100) {
-        check_errors_1.checkErrors.errorsMessages.push({ message: "errors", field: "websiteUrl" });
     }
     if (check_errors_1.checkErrors.errorsMessages.length > 0) {
         res.status(400).send(check_errors_1.checkErrors);

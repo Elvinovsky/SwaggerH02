@@ -71,8 +71,14 @@ blogsRouter.put('/:id', authGuardMiddleware, (req: Request, res: Response) => {
     if(!searchBlogByIdForUpdate) {
         res.sendStatus(404)
     }
-    checkErrors.errorsMessages = []
+    checkErrors.errorsMessages = [];
 
+    const checkRegEx = /^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+    if(!req.body.websiteUrl
+        || !checkRegEx.test(req.body.websiteUrl)
+        || req.body.websiteUrl.length > 100) {
+        checkErrors.errorsMessages.push({ message: "errors", field: "websiteUrl" })
+    }
     if(!req.body.name
         || typeof req.body.name !== "string"
         || !req.body.name.trim()
@@ -84,12 +90,6 @@ blogsRouter.put('/:id', authGuardMiddleware, (req: Request, res: Response) => {
         || !req.body.description.trim()
         || req.body.description.length > 500) {
         checkErrors.errorsMessages.push({ message: "errors", field: "description"})
-    }
-    const checkRegEx = /^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
-    if(!req.body.websiteUrl
-        || !checkRegEx.test(req.body.websiteUrl)
-        || req.body.websiteUrl.length > 100) {
-        checkErrors.errorsMessages.push({ message: "errors", field: "websiteUrl" })
     }
     if(checkErrors.errorsMessages.length > 0) {
         res.status(400).send(checkErrors)

@@ -33,30 +33,29 @@ postsRouter.get('/', (req: Request, res: Response) => {
     res.send(getAllPosts)})
 postsRouter.post('/', authGuardMiddleware, (req: Request, res: Response) => {
     checkErrors.errorsMessages = [];
-
-    if(!req.body.title
-        || typeof req.body.title !== "string"
-        || !req.body.title.trim()
-        || req.body.title.length > 30) {
-        checkErrors.errorsMessages.push({message: "errors", field: "title"})
-    }
     if(!req.body.shortDescription
         || typeof req.body.shortDescription !== "string"
         || !req.body.shortDescription.trim()
         || req.body.shortDescription.length > 100 ) {
         checkErrors.errorsMessages.push({message: "errors", field: "shortDescription"})
     }
+    if(!req.body.title
+        || typeof req.body.title !== "string"
+        || !req.body.title.trim()
+        || req.body.title.length > 30) {
+        checkErrors.errorsMessages.push( {message: "errors", field: "title"})
+    }
     if(!req.body.content
         || typeof req.body.content !== "string"
         || !req.body.content.trim()
         || req.body.content.length > 1000) {
-        checkErrors.errorsMessages.push({message: "errors", field: "content"})
+        checkErrors.errorsMessages.push( {message: "errors", field: "content"})
     }
     const validationInputBlogId = postsRepository.searchBlogIdForPost(req.body.blogId)
     if(!req.body.blogId
         || typeof req.body.blogId !== "string"
         || !validationInputBlogId) {
-        checkErrors.errorsMessages.push({message: "errors", field: "blogId"})
+        checkErrors.errorsMessages.push( {message: "errors", field: "blogId"})
     }
     if(checkErrors.errorsMessages.length > 0) {
         res.status(400).send(checkErrors)
@@ -78,30 +77,29 @@ postsRouter.put('/:id', authGuardMiddleware, (req: Request, res: Response) => {
         res.sendStatus(404)
     }
     checkErrors.errorsMessages = [];
-
-    if(!req.body.title
-        || typeof req.body.title !== "string"
-        || !req.body.title.trim()
-        || req.body.title.length > 30) {
-        checkErrors.errorsMessages.push({message: "errors", field: "title"})
-    }
     if(!req.body.shortDescription
         || typeof req.body.shortDescription !== "string"
         || !req.body.shortDescription.trim()
         || req.body.shortDescription.length > 100 ) {
-        checkErrors.errorsMessages.push({message: "errors", field: "shortDescription"})
+        checkErrors.errorsMessages.push( {message: "errors", field: "shortDescription"})
+    }
+    if(!req.body.title
+        || typeof req.body.title !== "string"
+        || !req.body.title.trim()
+        || req.body.title.length > 30) {
+        checkErrors.errorsMessages.push( {message: "errors", field: "title"})
     }
     if(!req.body.content
         || typeof req.body.content !== "string"
         || !req.body.content.trim()
         || req.body.content.length > 1000) {
-        checkErrors.errorsMessages.push({message: "errors", field: "content"})
+        checkErrors.errorsMessages.push( {message: "errors", field: "content"})
     }
 const validationInputBlogId = postsRepository.searchBlogIdForPost(req.body.blogId)
     if(!req.body.blogId
         || typeof req.body.blogId !== "string"
         || !validationInputBlogId) {
-        checkErrors.errorsMessages.push({message: "errors", field: "blogId"})
+        checkErrors.errorsMessages.push( {message: "errors", field: "blogId"})
     }
     if(checkErrors.errorsMessages.length > 0) {
         res.status(400).send(checkErrors)
