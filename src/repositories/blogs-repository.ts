@@ -6,7 +6,7 @@ export const blogsRepository = {
     returnOfAllBlogs: db.allBlogs,
     addNewBlog(name: string, description:string, websiteUrl: string) {
         const createNewBlog = {
-            id:	(+(new Date())).toString(13),
+            id:	(+(new Date())).toString(),
             name: name,
             description: description,
             websiteUrl: websiteUrl
