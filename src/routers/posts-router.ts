@@ -16,7 +16,7 @@ const authGuardMiddleware = ((req: Request, res: Response, next: NextFunction) =
     // Verify login and password are set and correct
     if (req.headers.authorization === 'Basic YWRtaW46cXdlcnR5' && login && password && login === auth.login && password === auth.password) {
         // Access granted...
-        return next()
+        return next();
     }
 
     // Access denied...
