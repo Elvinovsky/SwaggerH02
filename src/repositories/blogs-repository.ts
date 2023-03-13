@@ -1,9 +1,12 @@
 import {db} from "../database/db";
 export const blogsRepository = {
+    //тестовое удаление базны данных о блогах.
     testingDeleteAllBlogs(){
         return db.allBlogs = []
     },
+    //все существующие блоги.
     returnOfAllBlogs: db.allBlogs,
+    //создание и добавление нового блога.
     addNewBlog(name: string, description:string, websiteUrl: string) {
         const createNewBlog = {
             id:	(+(new Date())).toString(),
@@ -14,9 +17,11 @@ export const blogsRepository = {
         db.allBlogs.push(createNewBlog)
         return createNewBlog;
     },
+    //поиск и возврат блога по ID.
     findBlogById(id: string) {
         return  db.allBlogs.find(el => el.id === id)
     },
+    //обновление блога по айди.
     UpdateBlogById(id: string, name: string, description: string, websiteUrl: string) {
         if(this.findBlogById(id)){
             db.allBlogs.forEach(el => {
@@ -28,14 +33,11 @@ export const blogsRepository = {
         }
             return false;
     },
-    searchForBlogByIdDelete(id: string) {
-        const findDeleteBlog = db.allBlogs.find(el => el.id === id)
-        if(findDeleteBlog) {
-            db.allBlogs.forEach((id, index) => {
-                if (id === findDeleteBlog) {
-                    db.allBlogs.splice(index, 1);
-                }
-            })
+    //поиск блога по ID для удаления.
+    searchBlogByIdDelete(id: string) {
+        const index = db.allBlogs.findIndex(b => b.id === id)
+        if (index > -1) {
+            db.allBlogs.splice(index, 1)
             return true;
         }
         return false;
