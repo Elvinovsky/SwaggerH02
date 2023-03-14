@@ -10,7 +10,7 @@ exports.postsRouter.get('/', (req, res) => {
     const getAllPosts = posts_repository_1.postsRepository.returnOfAllPosts;
     res.send(getAllPosts);
 });
-exports.postsRouter.post('/', (req, res) => {
+exports.postsRouter.post('/', authentication_middleware_1.authenticationMiddleware, (req, res) => {
     errorsArray_1.errorsArray.errorsMessages = [];
     if (!req.body.shortDescription
         || typeof req.body.shortDescription !== "string"
@@ -82,12 +82,10 @@ exports.postsRouter.put('/:id', authentication_middleware_1.authenticationMiddle
     if (errorsArray_1.errorsArray.errorsMessages.length > 0) {
         res.status(400).send(errorsArray_1.errorsArray);
     }
-    const foundPostForUpdate = posts_repository_1.postsRepository.updatePostById(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId);
+    const foundPostForUpdate = posts_repository_1.postsRepository
+        .updatePostById(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId);
     if (foundPostForUpdate) {
         res.sendStatus(204);
-    }
-    else {
-        res.status(304).send({ "errorMessages": "Unexpected Error" });
     }
 });
 exports.postsRouter.delete('/:id', authentication_middleware_1.authenticationMiddleware, (req, res) => {

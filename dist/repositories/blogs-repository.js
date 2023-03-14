@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogsRepository = void 0;
 const db_1 = require("../database/db");
 exports.blogsRepository = {
-    //тестовое удаление базны данных о блогах.
+    //тестовое удаление базы данных о блогах.
     testingDeleteAllBlogs() {
         return db_1.db.allBlogs = [];
     },
@@ -15,7 +15,9 @@ exports.blogsRepository = {
             id: (+(new Date())).toString(),
             name: name,
             description: description,
-            websiteUrl: websiteUrl
+            websiteUrl: websiteUrl,
+            createdAt: new Date().toISOString(),
+            isMembership: false
         };
         db_1.db.allBlogs.push(createNewBlog);
         return createNewBlog;
@@ -25,7 +27,7 @@ exports.blogsRepository = {
         return db_1.db.allBlogs.find(el => el.id === id);
     },
     //обновление блога по айди.
-    UpdateBlogById(id, name, description, websiteUrl) {
+    updateBlogById(id, name, description, websiteUrl) {
         if (this.findBlogById(id)) {
             db_1.db.allBlogs.forEach(el => {
                 el.name = name;

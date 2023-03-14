@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.postsRepository = void 0;
 const db_1 = require("../database/db");
 exports.postsRepository = {
-    // тестовое удаление базы данных Постовю
+    // тестовое удаление базы данных Постов
     testingDeleteAllPosts() {
         return db_1.db.allPosts = [];
     },
@@ -18,7 +18,8 @@ exports.postsRepository = {
             shortDescription: shortDescription,
             content: content,
             blogId: blogId,
-            blogName: searchOutputBlogName
+            blogName: searchOutputBlogName,
+            createdAt: new Date().toISOString()
         };
         db_1.db.allPosts.push(createNewPost);
         return createNewPost;
@@ -42,8 +43,7 @@ exports.postsRepository = {
     },
     //поиск ID блога для поста.
     searchBlogIdForPost(blogId) {
-        const validatorBlogId = db_1.db.allBlogs.find(el => el.id === blogId);
-        return validatorBlogId;
+        return db_1.db.allBlogs.find(el => el.id === blogId);
     },
     // поиск и удаление поста по ID.
     searchForPostByIdDelete(id) {

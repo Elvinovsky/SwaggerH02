@@ -70,12 +70,10 @@ exports.blogsRouter.put('/:id', authentication_middleware_1.authenticationMiddle
     if (errorsArray_1.errorsArray.errorsMessages.length > 0) {
         res.status(400).send(errorsArray_1.errorsArray);
     }
-    const foundBlogForUpdate = blogs_repository_1.blogsRepository.UpdateBlogById(req.params.id, req.body.name, req.body.description, req.body.websiteUrl);
+    const foundBlogForUpdate = blogs_repository_1.blogsRepository
+        .updateBlogById(req.params.id, req.body.name, req.body.description, req.body.websiteUrl);
     if (foundBlogForUpdate) {
         res.sendStatus(204);
-    }
-    else {
-        res.status(304).send({ "errorMessages": "Unexpected Error" });
     }
 });
 exports.blogsRouter.delete('/:id', authentication_middleware_1.authenticationMiddleware, (req, res) => {
